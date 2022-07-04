@@ -1,7 +1,6 @@
 {
   "name": "express-bootcamp-template",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "start": "nodemon index.js"
   },
