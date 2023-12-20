@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("riskscenario", {
+    await queryInterface.createTable("risktables", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,17 +11,13 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
 
-      name: {
+      user_id: {
         allowNull: false,
-        type: Sequelize.STRING,
-      },
-      description: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      strategy: {
-        allowNull: true,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        },
       },
 
       created_at: {
@@ -36,6 +32,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("riskscenario");
+    await queryInterface.dropTable("risktables");
   },
 };

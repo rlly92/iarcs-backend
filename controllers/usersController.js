@@ -20,23 +20,14 @@ class UsersController extends BaseController {
   // Create new user/populate new user's details:
   async createNewUser(req, res) {
     try {
-      const {
-        email,
-        first_name,
-        last_name,
-        phone_number,
-        buyer_address,
-        seller_address,
-      } = req.body;
+      const { email, name, isrc } = req.body;
       console.log(req.body);
 
       const newUser = await this.model.create({
         email: email,
-        first_name: first_name,
-        last_name: last_name,
-        phone_number: phone_number,
-        buyer_address: buyer_address,
-        seller_address: seller_address,
+        name: name,
+
+        isrc: isrc,
       });
       console.log(newUser);
       return res.json(newUser);
@@ -45,7 +36,7 @@ class UsersController extends BaseController {
     }
   }
 
-  // To check if user has given us the necessary additinal info like phone no., addresses etc.
+  // To check if user has given us the necessary additinal info like their email and name etc.
   async checkUserInfoExists(req, res) {
     try {
       const { email } = req.query;

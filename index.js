@@ -7,52 +7,59 @@ require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 const app = express();
 
+// middleware for Auth0:
+const checkJwt = auth({
+  audience: process.env.AUDIENCE,
+  issuerBaseURL: process.env.ISSUER_BASE_URL,
+  tokenSigningAlg: process.env.TOKEN_SIGNING,
+});
+
 // import DB:
 const db = require("./db/models/index");
-const { users, risktable, riskscenario, risktable_riskscenario } = db;
+const { users, risktables, riskscenarios, risktables_riskscenarios } = db;
 
 // importing Routers
 const UsersRouter = require("./routers/usersRouter");
-const RisktableRouter = require("./routers/risktableRouter");
-const RiskscenarioRouter = require("./routers/riskscenarioRouter");
-const RisktableriskscenarioRouter = require("./routers/RisktableriskscenarioRouter");
+const RisktablesRouter = require("./routers/risktablesRouter");
+const RiskscenariosRouter = require("./routers/riskscenariosRouter");
+const RisktablesriskscenariosRouter = require("./routers/risktablesriskscenariosRouter");
 
 // importing Controllers
 const UsersController = require("./controllers/usersController");
-const RisktableController = require("./controllers/risktableController");
-const RiskscenarioController = require("./controllers/riskscenarioController");
-const RisktableriskscenarioController = require("./controllers/risktableriskscenarioController");
+const RisktablesController = require("./controllers/risktablesController");
+const RiskscenariosController = require("./controllers/riskscenariosController");
+const RisktablesriskscenariosController = require("./controllers/risktablesriskscenariosController");
 
 // initializing Controllers
 const usersController = new UsersController(users);
-const risktableController = new RisktableController(
-  risktable,
+const risktablesController = new RisktablesController(
+  risktables,
   users,
-  riskscenario,
-  risktable_riskscenario
+  riskscenarios,
+  risktables_riskscenarios
 );
-const riskscenarioController = new RiskscenarioController(
-  riskscenario,
-  risktable_riskscenario
+const riskscenariosController = new RiskscenariosController(
+  riskscenarios,
+  risktables_riskscenarios
 );
-const risktableriskscenarioController = new RisktableriskscenarioController(
-  riskscenario,
-  risktable_riskscenario,
-  risktable
+const risktablesriskscenariosController = new RisktablesriskscenariosController(
+  riskscenarios,
+  risktables_riskscenarios,
+  risktables
 );
 
 // inittializing Routers
 const usersRouter = new UsersRouter(usersController, checkJwt).routes();
-const risktableRouter = new RisktableRouter(
-  risktableController,
+const risktablesRouter = new RisktablesRouter(
+  risktablesController,
   checkJwt
 ).routes();
-const riskscenarioRouter = new RiskscenarioRouter(
-  riskscenarioController,
+const riskscenariosRouter = new RiskscenariosRouter(
+  riskscenariosController,
   checkJwt
 ).routes();
-const risktableriskscenarioRouter = new RisktableriskscenarioRouter(
-  risktableriskscenarioController,
+const risktablesriskscenariosRouter = new RisktablesriskscenariosRouter(
+  risktablesriskscenariosController,
   checkJwt
 ).routes();
 
@@ -63,15 +70,9 @@ app.use(express.urlencoded({ extended: false }));
 
 // using the routers
 app.use("/users", usersRouter);
-app.use("/risktable", risktableRouter);
-app.use("/riskscenario", riskscenarioRouter);
-app.use("/risktableriskscenario", risktableriskscenarioRouter);
-
-// middleware for Auth0:
-const checkJwt = auth({
-  audience: "https://project3bootcamp/api",
-  issuerBaseURL: `https://dev-uun7isc4ev72mwao.us.auth0.com/`,
-});
+app.use("/risktables", risktablesRouter);
+app.use("/riskscenarios", riskscenariosRouter);
+app.use("/risktablesriskscenarios", risktablesriskscenariosRouter);
 
 // Auth0 Route that requires authentication:
 app.get("/api/private", checkJwt, function (req, res) {

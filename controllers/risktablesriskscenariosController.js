@@ -1,6 +1,6 @@
 const BaseController = require("./baseController");
 
-class RisktableriskscenarioController extends BaseController {
+class RisktablesriskscenariosController extends BaseController {
   constructor(model, carts, listings, users) {
     super(model);
     this.cartsModel = carts;
@@ -130,4 +130,4 @@ class RisktableriskscenarioController extends BaseController {
   }
 }
 
-module.exports = RisktableriskscenarioController;
+module.exports = RisktablesriskscenariosController;

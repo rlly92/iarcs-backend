@@ -3,15 +3,15 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Riskscenario extends Model {
+  class Riskscenarios extends Model {
     static associate(models) {
       // define association here
-      Riskscenario.belongsToMany(models.risktable, {
-        through: "risktable_riskscenario",
+      Riskscenarios.belongsToMany(models.risktables, {
+        through: "risktables_riskscenarios",
       });
     }
   }
-  Riskscenario.init(
+  Riskscenarios.init(
     {
       id: {
         allowNull: false,
@@ -36,9 +36,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "riskscenario",
+      modelName: "riskscenarios",
       underscored: true,
     }
   );
-  return Riskscenario;
+  return Riskscenarios;
 };

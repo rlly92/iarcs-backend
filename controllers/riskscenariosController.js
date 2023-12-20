@@ -1,37 +1,38 @@
 const BaseController = require("./baseController");
 const { Op } = require("sequelize");
 
-class RiskscenarioController extends BaseController {
-  constructor(model, categories, users) {
+class RiskscenariosController extends BaseController {
+  constructor(model, users, riskscenarios, risktable) {
     super(model);
     this.usersModel = users;
-    this.categoriesModel = categories;
+    this.riskscenariosModel = riskscenarios;
+    this.risktableModel = risktable;
   }
 
-  // Retrieve ALL Listings
-  async getAllListings(req, res) {
-    console.log("IS getAllListings WORKING?");
+  // Retrieve ALL SCENARIOS:
+  async getAllScenarios(req, res) {
+    console.log("IS getAllScenarios WORKING?");
     try {
-      const listings = await this.model.findAll();
-      return res.json(listings);
+      const scenarios = await this.model.findAll();
+      return res.json(scenarios);
     } catch (err) {
       return res.status(400).json({ error: true, msg: err });
     }
   }
 
   // Retrieve ONE SPECIFIC Listing using PARAMS:
-  async getOneListing(req, res) {
-    console.log("IS getOneListing WORKING?");
-    try {
-      const { listing_id } = req.params;
-      const listing = await this.model.findOne({
-        where: { id: listing_id },
-      });
-      return res.json(listing);
-    } catch (err) {
-      return res.status(400).json({ error: true, msg: err });
-    }
-  }
+  // async getOneListing(req, res) {
+  //   console.log("IS getOneListing WORKING?");
+  //   try {
+  //     const { listing_id } = req.params;
+  //     const listing = await this.model.findOne({
+  //       where: { id: listing_id },
+  //     });
+  //     return res.json(listing);
+  //   } catch (err) {
+  //     return res.status(400).json({ error: true, msg: err });
+  //   }
+  // }
 
   // Retrieve ONE SPECIFIC LISTING using BODY:
   // async getOneListingUsingBody(req, res) {
@@ -157,4 +158,4 @@ class RiskscenarioController extends BaseController {
   }
 }
 
-module.exports = RiskscenarioController;
+module.exports = RiskscenariosController;

@@ -1,14 +1,14 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Risktable_Riskscenario extends Model {
+  class Risktables_Riskscenarios extends Model {
     static associate(models) {
       // define association here
-      Risktable_Riskscenario.belongsTo(models.risktable);
-      Risktable_Riskscenario.belongsTo(models.riskscenario);
+      Risktables_Riskscenarios.belongsTo(models.risktables);
+      Risktables_Riskscenarios.belongsTo(models.riskscenarios);
     }
   }
-  Risktable_Riskscenario.init(
+  Risktables_Riskscenarios.init(
     {
       id: {
         allowNull: false,
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "risktable",
+          model: "risktables",
           key: "id",
         },
       },
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "riskscenario",
+          model: "riskscenarios",
           key: "id",
         },
       },
@@ -43,9 +43,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "risktable_riskscenario",
+      modelName: "risktables_riskscenarios",
       underscored: true,
     }
   );
-  return Risktable_Riskscenario;
+  return Risktables_Riskscenarios;
 };
