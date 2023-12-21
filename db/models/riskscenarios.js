@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   class Riskscenarios extends Model {
     static associate(models) {
       // define association here
-      Riskscenarios.belongsToMany(models.risktables, {
-        through: "risktables_riskscenarios",
+      Riskscenarios.belongsToMany(models.users, {
+        through: "users_riskscenarios",
       });
     }
   }

@@ -16,50 +16,38 @@ const checkJwt = auth({
 
 // import DB:
 const db = require("./db/models/index");
-const { users, risktables, riskscenarios, risktables_riskscenarios } = db;
+const { users, riskscenarios, users_riskscenarios } = db;
 
 // importing Routers
 const UsersRouter = require("./routers/usersRouter");
-const RisktablesRouter = require("./routers/risktablesRouter");
 const RiskscenariosRouter = require("./routers/riskscenariosRouter");
-const RisktablesriskscenariosRouter = require("./routers/risktablesriskscenariosRouter");
+const UsersriskscenariosRouter = require("./routers/usersriskscenariosRouter");
 
 // importing Controllers
 const UsersController = require("./controllers/usersController");
-const RisktablesController = require("./controllers/risktablesController");
 const RiskscenariosController = require("./controllers/riskscenariosController");
-const RisktablesriskscenariosController = require("./controllers/risktablesriskscenariosController");
+const UsersriskscenariosController = require("./controllers/usersriskscenariosController");
 
 // initializing Controllers
 const usersController = new UsersController(users);
-const risktablesController = new RisktablesController(
-  risktables,
-  users,
-  riskscenarios,
-  risktables_riskscenarios
-);
 const riskscenariosController = new RiskscenariosController(
   riskscenarios,
-  risktables_riskscenarios
+  users
 );
-const risktablesriskscenariosController = new RisktablesriskscenariosController(
-  riskscenarios,
-  risktables_riskscenarios,
-  risktables
+const usersriskscenariosController = new UsersriskscenariosController(
+  users_riskscenarios,
+  users,
+  riskscenarios
 );
 
 // inittializing Routers
 const usersRouter = new UsersRouter(usersController, checkJwt).routes();
-const risktablesRouter = new RisktablesRouter(
-  risktablesController,
-  checkJwt
-).routes();
 const riskscenariosRouter = new RiskscenariosRouter(
   riskscenariosController,
   checkJwt
 ).routes();
-const risktablesriskscenariosRouter = new RisktablesriskscenariosRouter(
-  risktablesriskscenariosController,
+const usersriskscenariosRouter = new UsersriskscenariosRouter(
+  usersriskscenariosController,
   checkJwt
 ).routes();
 
@@ -70,9 +58,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // using the routers
 app.use("/users", usersRouter);
-app.use("/risktables", risktablesRouter);
 app.use("/riskscenarios", riskscenariosRouter);
-app.use("/risktablesriskscenarios", risktablesriskscenariosRouter);
+app.use("/usersriskscenarios", usersriskscenariosRouter);
 
 // Auth0 Route that requires authentication:
 app.get("/api/private", checkJwt, function (req, res) {

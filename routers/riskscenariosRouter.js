@@ -9,13 +9,20 @@ class RiskscenariosRouter {
 
   routes() {
     router.use(this.checkJwt);
-    router.get("/", this.controller.getAllScenarios.bind(this.controller));
-    // router.post(
-    //   "/createnewcategory",
-    //   this.controller.createNewCategory.bind(this.controller)
-    // );
 
-    // COMMENT: routes with /:params_id will always be the last. order matters since anything after /:params routes will assume that thing is a param.
+    // for when RC/PM needs to get all scenarios for loading in respective home page:
+    router.get("/", this.controller.getAllScenarios.bind(this.controller));
+
+    router.post(
+      "/addriskscenario",
+      this.controller.createRiskScenario.bind(this.controller)
+    );
+
+    // for when RC edits the risk scenarios in the risk scenario db:
+    router.put(
+      "/editriskscenario",
+      this.controller.editRiskScenario.bind(this.controller)
+    );
 
     return router;
   }

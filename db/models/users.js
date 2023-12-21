@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
       // define association here
-      Users.hasMany(models.risktables);
+      Users.belongsToMany(models.riskscenarios, {
+        through: "users_riskscenarios",
+      });
     }
   }
   Users.init(
@@ -31,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         allowNull: false,
         unique: true,
+        type: DataTypes.STRING,
+      },
+      project: {
+        allowNull: true,
         type: DataTypes.STRING,
       },
     },

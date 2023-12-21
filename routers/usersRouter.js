@@ -11,17 +11,15 @@ class UsersRouter {
   routes() {
     router.use(this.checkJwt);
 
-    router.get("/", this.controller.getAll.bind(this.controller));
+    // to get userID from db using email sent from Frontend:
+    router.get("/getUserID", this.controller.getUserID.bind(this.controller));
 
-    router.post(
-      "/signupinfo",
-      this.controller.createNewUser.bind(this.controller)
-    );
-    // to get userinfo to check if user info exists on db:
-    router.get(
-      "/checkuserinfo",
-      this.controller.checkUserInfoExists.bind(this.controller)
-    );
+    // router.get("/", this.controller.getAll.bind(this.controller));
+    // router.post(
+    //   "/signupinfo",
+    //   this.controller.createNewUser.bind(this.controller)
+    // );
+
     // router.get("/:userID", this.controller.getOneUser.bind(this.controller));
     return router;
   }
