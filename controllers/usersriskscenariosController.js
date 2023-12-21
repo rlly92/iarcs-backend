@@ -98,7 +98,6 @@ class UsersriskscenariosController extends BaseController {
   }
 
   //THIS IS THE LOGIC FOR WHEN PM DELETES RISK SCENARIO FROM THEIR RISK TABLE:
-
   async deleteScenario(req, res) {
     try {
       console.log("IS deleteRiskScenario EVEN WORKING?");
@@ -106,7 +105,7 @@ class UsersriskscenariosController extends BaseController {
       // Get the user_riskscenario_id from params
       const { UserRiskScenarioID } = req.params;
 
-      // Find the item to delete from the cart
+      // Find the scenario to delete:
       const riskScenarioToDelete = await this.model.findByPk(
         UserRiskScenarioID
       );
@@ -117,7 +116,7 @@ class UsersriskscenariosController extends BaseController {
           .json({ error: true, msg: "User_riskscenario not found" });
       }
 
-      // Delete the item from the cart
+      // Delete the scenario from the risk table:
       await riskScenarioToDelete.destroy();
 
       console.log("User_Riskscenario deleted:", UserRiskScenarioID);
@@ -130,6 +129,64 @@ class UsersriskscenariosController extends BaseController {
       return res.status(400).json({ error: true, msg: err });
     }
   }
+
+  // LOGIC FOR WHEN RC NEEDS TO GET ALL RISK SCENARIO TABLES CREATED BY PM:
+  async getAllRiskScenarioTables(req, res) {
+    try {
+      const fetchPMRiskScenarioTables = await this.model.findAll({
+        include: [
+          {
+            model: this.usersModel,
+            attributes: ["name", "email", "project"],
+          },
+          {
+            model: this.riskscenariosModel,
+            attributes: ["name", "description", "strategy"],
+          },
+        ],
+      });
+
+      const sortedPMTablesData = fetchPMRiskScenarioTables.sort(
+        (a, b) => a.user_id - b.user_id
+      );
+      const organizedRiskTables = sortedPMTablesData.reduce((acc, scenario) => {
+        const userIndex = acc.findIndex(
+          (user) => user.user_id === scenario.user_id
+        );
+
+        if (userIndex === -1) {
+          acc.push({
+            user_id: scenario.user_id,
+            userName: scenario.user.name,
+            userEmail: scenario.user.email,
+            riskScenarios: [
+              {
+                id: scenario.id,
+                riskScenarioName: scenario.riskscenario.name,
+                riskScenarioDescription: scenario.riskscenario.description,
+                riskScenarioStrategy: scenario.riskscenario.strategy,
+              },
+            ],
+          });
+        } else {
+          acc[userIndex].riskScenarios.push({
+            id: scenario.id,
+            riskScenarioName: scenario.riskscenario.name,
+            riskScenarioDescription: scenario.riskscenario.description,
+            riskScenarioStrategy: scenario.riskscenario.strategy,
+          });
+        }
+
+        return acc;
+      }, []);
+      return res.json(organizedRiskTables);
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ error: true, msg: err });
+    }
+  }
+
+  //
 }
 
 module.exports = UsersriskscenariosController;
