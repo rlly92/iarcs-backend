@@ -14,13 +14,6 @@ class UsersRouter {
     // to get userID from db using email sent from Frontend:
     router.get("/getUserID", this.controller.getUserID.bind(this.controller));
 
-    // router.get("/", this.controller.getAll.bind(this.controller));
-    // router.post(
-    //   "/signupinfo",
-    //   this.controller.createNewUser.bind(this.controller)
-    // );
-
-    // router.get("/:userID", this.controller.getOneUser.bind(this.controller));
     return router;
   }
 }

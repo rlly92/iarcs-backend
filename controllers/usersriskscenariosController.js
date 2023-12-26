@@ -149,11 +149,15 @@ class UsersriskscenariosController extends BaseController {
       const sortedPMTablesData = fetchPMRiskScenarioTables.sort(
         (a, b) => a.user_id - b.user_id
       );
+      console.log("THIS IS SORTEDPMTABLESDATA:", sortedPMTablesData);
       const organizedRiskTables = sortedPMTablesData.reduce((acc, scenario) => {
+        // check to see if the acc has stored a particular user's user_id already:
         const userIndex = acc.findIndex(
           (user) => user.user_id === scenario.user_id
         );
-
+        console.log("THIS IS SCENARIO.USER_ID:", scenario.user_id);
+        console.log("HELLO THIS IS USERINDEX", userIndex);
+        // if acc does not contain a user_id for that particular user:
         if (userIndex === -1) {
           acc.push({
             user_id: scenario.user_id,
@@ -168,7 +172,9 @@ class UsersriskscenariosController extends BaseController {
               },
             ],
           });
-        } else {
+        }
+        // if acc DOES contain a user_id for that particular user (and it's corresponding "first scenario" for that user):
+        else {
           acc[userIndex].riskScenarios.push({
             id: scenario.id,
             riskScenarioName: scenario.riskscenario.name,

@@ -25,18 +25,6 @@ class UsersController extends BaseController {
       return res.status(400).json({ error: true, msg: err });
     }
   }
-
-  // Retrieve one user
-  // async getOneUser(req, res) {
-  //   const { userID } = req.params;
-  //   try {
-  //     const user = await this.model.findByPk(userID);
-  //     return res.json(user);
-  //   } catch (err) {
-  //     console.log(err);
-  //     return res.status(400).json({ error: true, msg: err });
-  //   }
-  // }
 }
 
 module.exports = UsersController;
